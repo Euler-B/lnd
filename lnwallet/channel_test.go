@@ -5549,20 +5549,22 @@ func TestChanRemoteAvailableBalance(t *testing.T) {
 
 		// Query the RemoteAvailableBalance from Alice's PoV.
 		// This should be what Bob can send.
-		aliceRemoteAvailableBalance := aliceChannel.RemoteAvailableBalance()
+		aliceRemoteBalance := aliceChannel.RemoteAvailableBalance()
 
 		// Query the AvailableBalance from Bob's PoV.
 		bobAvailableBalance := bobChannel.AvailableBalance()
 
-		require.Equal(t, bobAvailableBalance, aliceRemoteAvailableBalance,
-			"Alice's view of Bob's balance should match Bob's own view")
+		require.Equal(t, bobAvailableBalance, aliceRemoteBalance,
+			"Alice's view of Bob's balance should match "+
+				"Bob's own view")
 
 		// Also check from Bob's PoV.
-		bobRemoteAvailableBalance := bobChannel.RemoteAvailableBalance()
+		bobRemoteBalance := bobChannel.RemoteAvailableBalance()
 		aliceAvailableBalance := aliceChannel.AvailableBalance()
 
-		require.Equal(t, aliceAvailableBalance, bobRemoteAvailableBalance,
-			"Bob's view of Alice's balance should match Alice's own view")
+		require.Equal(t, aliceAvailableBalance, bobRemoteBalance,
+			"Bob's view of Alice's balance should match "+
+				"Alice's own view")
 	}
 
 	// Initially, both should be correct.

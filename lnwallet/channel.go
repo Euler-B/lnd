@@ -3789,9 +3789,8 @@ func (b BufferType) String() string {
 // the adjusted balance, the buffer (less the commit fee), and the commit fee.
 func (lc *LightningChannel) applyCommitFee(
 	balance lnwire.MilliSatoshi, commitWeight lntypes.WeightUnit,
-	feePerKw chainfee.SatPerKWeight,
-	buffer BufferType, isInitiator bool) (lnwire.MilliSatoshi, lnwire.MilliSatoshi,
-	lnwire.MilliSatoshi, error) {
+	feePerKw chainfee.SatPerKWeight, buffer BufferType, isInitiator bool) (
+	lnwire.MilliSatoshi, lnwire.MilliSatoshi, lnwire.MilliSatoshi, error) {
 
 	commitFee := feePerKw.FeeForWeight(commitWeight)
 	commitFeeMsat := lnwire.NewMSatFromSatoshis(commitFee)
@@ -9081,6 +9080,7 @@ func (lc *LightningChannel) RemoteAvailableBalance() lnwire.MilliSatoshi {
 	defer lc.RUnlock()
 
 	bal, _ := lc.remoteAvailableBalance(FeeBuffer)
+
 	return bal
 }
 
@@ -9105,7 +9105,8 @@ func (lc *LightningChannel) remoteAvailableBalance(
 // calculate the available balance for either the local or remote party,
 // depending on the isRemote flag.
 func (lc *LightningChannel) availableBalanceGeneric(
-	buffer BufferType, isRemote bool) (lnwire.MilliSatoshi, lntypes.WeightUnit) {
+	buffer BufferType, isRemote bool) (
+	lnwire.MilliSatoshi, lntypes.WeightUnit) {
 
 	htlcView := lc.fetchHTLCView(
 		lc.updateLogs.Remote.logIndex, lc.updateLogs.Local.logIndex,
@@ -9219,7 +9220,11 @@ func (lc *LightningChannel) availableCommitmentBalance(view *HtlcView,
 		// declare bufferAmt beforehand.
 		var bufferAmt lnwire.MilliSatoshi
 		balance, bufferAmt, commitFee, err = lc.applyCommitFee(
-			balance, futureCommitWeight, feePerKw, buffer, initiator,
+			balance,
+			futureCommitWeight,
+			feePerKw,
+			buffer,
+			initiator,
 		)
 		if err != nil {
 			lc.log.Debugf("No available balance after "+
